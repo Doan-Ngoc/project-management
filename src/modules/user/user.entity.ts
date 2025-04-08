@@ -9,7 +9,8 @@ import {
 import WorkingUnit from '../working-unit/working-unit.entity';
 import { Role } from '../role/role.entity';
 import { AccountStatus } from '../../enum/account-status.enum';
-
+import { Exclude } from 'class-transformer';
+import { IsEmail } from 'class-validator';
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -19,10 +20,15 @@ export class User {
   username: string;
 
   @Column({ type: 'varchar', length: 255 })
-  employee_name: string;
+  @Exclude()
+  hashed_password: string;
+
+  @Column({ type: 'varchar', length: 255, unique: true })
+  @IsEmail()
+  email: string;
 
   @Column({ type: 'varchar', length: 255 })
-  hashed_password: string;
+  employee_name: string;
 
   @Column()
   account_status: AccountStatus;
@@ -34,7 +40,7 @@ export class User {
   profile_picture: string;
 
   @ManyToOne(() => Role)
-  @JoinColumn({ name: 'role_id' })
+  @JoinColumn({ name: 'account_role_id' })
   role: Role;
 
   @ManyToOne(() => WorkingUnit, { nullable: true })

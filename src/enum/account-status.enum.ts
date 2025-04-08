@@ -1,5 +1,5 @@
 export enum AccountStatus {
-  PENDING = 'PENDING',
-  ACTIVE = 'ACTIVE',
-  DISABLE = 'DISABLE',
+  PENDING = 'pending',
+  ACTIVE = 'active',
+  DISABLE = 'disable',
 }
