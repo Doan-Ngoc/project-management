@@ -5,9 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as path from 'path';
 import { configValidationSchema } from './configs/config.schema';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
+import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { JwtModule } from './jwt/jwt.module';
+import { JwtModule } from './modules/jwt/jwt.module';
 
 @Module({
   imports: [

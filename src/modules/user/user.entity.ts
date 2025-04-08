@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import WorkingUnit from '../working-unit/working-unit.entity';
 import { Role } from '../role/role.entity';
-import { AccountStatus } from '../enum/account-status.enum';
+import { AccountStatus } from '../../enum/account-status.enum';
 
 @Entity('user')
 export class User {
