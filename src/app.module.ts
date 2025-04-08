@@ -6,6 +6,8 @@ import * as path from 'path';
 import { configValidationSchema } from './configs/config.schema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from './jwt/jwt.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { UserModule } from './user/user.module';
       }),
     }),
     UserModule,
+    AuthModule,
+    JwtModule,
   ],
   controllers: [AppController],
   providers: [AppService],
