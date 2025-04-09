@@ -4,9 +4,9 @@ import { ClientController } from './client.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Client } from './client.entity';
 import { ClientRepository } from './client.repository';
-
+import { JwtModule } from '../jwt/jwt.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([Client])],
+  imports: [TypeOrmModule.forFeature([Client]), JwtModule],
   controllers: [ClientController],
   providers: [ClientService, ClientRepository],
   exports: [ClientService],

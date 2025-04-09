@@ -9,4 +9,12 @@ export class JwtService {
   sign(payload: object, secretKey: string, options?: jwt.SignOptions): string {
     return jwt.sign(payload, secretKey, options);
   }
+
+  verify(token: string, secretKey: string) {
+    try {
+      return jwt.verify(token, secretKey);
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
+  }
 }
