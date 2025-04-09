@@ -16,6 +16,7 @@ import { AccountStatus } from 'src/enum/account-status.enum';
 import { Role } from '../role/role.entity';
 import { RoleName } from 'src/enum/role.enum';
 import { RoleRepository } from '../role/role.repository';
+import { AccountType } from 'src/enum/account-type.enum';
 
 @Injectable()
 export class UserService {
@@ -31,7 +32,7 @@ export class UserService {
     const hashedPassword = this.authService.hashPassword(password);
 
     const regularRole = await this.roleRepository.findOne({
-      where: { name: RoleName.REGULAR },
+      where: { name: RoleName.MEMBER },
     });
     if (!regularRole) {
       throw new InternalServerErrorException('Regular role not found');
@@ -42,6 +43,7 @@ export class UserService {
       hashed_password: hashedPassword,
       role: regularRole,
       account_status: AccountStatus.PENDING,
+      account_type: AccountType.MEMBER,
     };
 
     try {

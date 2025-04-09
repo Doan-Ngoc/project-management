@@ -11,6 +11,7 @@ import { Role } from '../role/role.entity';
 import { AccountStatus } from '../../enum/account-status.enum';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
+import { AccountType } from '../../enum/account-type.enum';
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -30,7 +31,16 @@ export class User {
   @Column({ type: 'varchar', length: 255 })
   employee_name: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: AccountType,
+  })
+  account_type: AccountType;
+
+  @Column({
+    type: 'enum',
+    enum: AccountStatus,
+  })
   account_status: AccountStatus;
 
   @CreateDateColumn()
@@ -40,7 +50,7 @@ export class User {
   profile_picture: string;
 
   @ManyToOne(() => Role, { nullable: false })
-  @JoinColumn({ name: 'account_role_id' })
+  @JoinColumn({ name: 'role_id' })
   role: Role;
 
   @ManyToOne(() => WorkingUnit, { nullable: true })
