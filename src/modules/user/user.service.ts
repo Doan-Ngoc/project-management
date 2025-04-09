@@ -12,15 +12,14 @@ import { UserRepository } from './user.repository';
 import { AccountStatus } from 'src/enum/account-status.enum';
 import { Role } from '../role/role.entity';
 import { RoleName } from 'src/enum/role.enum';
+import { RoleRepository } from '../role/role.repository';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly authService: AuthService,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-    @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
+    private readonly userRepository: UserRepository,
+    private readonly roleRepository: RoleRepository,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
