@@ -23,7 +23,7 @@ export class UserService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { password, ...userData } = createUserDto;
+    const { password, ...createUserData } = createUserDto;
     const hashedPassword = this.authService.hashPassword(password);
 
     const regularRole = await this.roleRepository.findOne({
@@ -33,20 +33,21 @@ export class UserService {
       throw new InternalServerErrorException('Regular role not found');
     }
 
-    const newUser = {
-      ...userData,
+    const userData = {
+      ...createUserData,
       hashed_password: hashedPassword,
-      account_role_id: regularRole.id,
+      role: regularRole,
       account_status: AccountStatus.PENDING,
     };
 
     try {
-      const user = this.userRepository.create(newUser);
+      const newUser = this.userRepository.create(userData);
       return await this.userRepository.save(newUser);
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException();
       } else {
+        console.log(error);
         throw new InternalServerErrorException();
       }
     }

@@ -39,7 +39,7 @@ export class User {
   @Column({ type: 'text', nullable: true })
   profile_picture: string;
 
-  @ManyToOne(() => Role)
+  @ManyToOne(() => Role, { nullable: false })
   @JoinColumn({ name: 'account_role_id' })
   role: Role;
 
