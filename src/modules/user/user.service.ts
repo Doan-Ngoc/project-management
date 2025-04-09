@@ -1,7 +1,10 @@
 import {
   ConflictException,
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
@@ -17,7 +20,8 @@ import { RoleRepository } from '../role/role.repository';
 @Injectable()
 export class UserService {
   constructor(
-    private readonly authService: AuthService,
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService,
     private readonly userRepository: UserRepository,
     private readonly roleRepository: RoleRepository,
   ) {}
@@ -51,5 +55,15 @@ export class UserService {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  async getUserByUserName(username: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { username },
+    });
+    if (!user) {
+      throw new NotFoundException(`User not found`);
+    }
+    return user;
   }
 }
