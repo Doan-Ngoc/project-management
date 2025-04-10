@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from 'src/modules/auth/auth.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
@@ -28,20 +28,21 @@ export class UserService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { password, ...createUserData } = createUserDto;
+    const { password, role_id, ...createUserData } = createUserDto;
     const hashedPassword = this.authService.hashPassword(password);
 
-    const regularRole = await this.roleRepository.findOne({
-      where: { name: RoleName.MEMBER },
+    const role = await this.roleRepository.findOne({
+      where: { id: role_id },
     });
-    if (!regularRole) {
-      throw new InternalServerErrorException('Regular role not found');
+
+    if (!role) {
+      throw new NotFoundException(`Role not found`);
     }
 
     const userData = {
       ...createUserData,
+      role,
       hashed_password: hashedPassword,
-      role: regularRole,
       account_status: AccountStatus.PENDING,
       account_type: AccountType.MEMBER,
     };
@@ -53,7 +54,6 @@ export class UserService {
       if (error.code === '23505') {
         throw new ConflictException();
       } else {
-        console.log(error);
         throw new InternalServerErrorException();
       }
     }
@@ -62,6 +62,7 @@ export class UserService {
   async getUserByUserName(username: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { username },
+      relations: ['role'],
     });
     if (!user) {
       throw new NotFoundException(`User not found`);

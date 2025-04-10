@@ -6,11 +6,13 @@ import {
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { Permission } from './permission.entity';
 import { PermissionRepository } from './permission.repository';
+import { Role } from '../role/role.entity';
 
 @Injectable()
 export class PermissionService {
   constructor(private readonly permissionRepository: PermissionRepository) {}
 
+  //Create New Permission
   async createPermission(
     createPermissionDto: CreatePermissionDto,
   ): Promise<Permission> {
@@ -23,5 +25,15 @@ export class PermissionService {
       }
       throw new InternalServerErrorException();
     }
+  }
+
+  //Get Permission Roles
+  async getPermissionRoles(requiredPermission: string): Promise<string[]> {
+    const permission = await this.permissionRepository.findOne({
+      where: { name: requiredPermission },
+      relations: ['roles'],
+    });
+
+    return permission ? permission.roles.map((role) => role.id) : [];
   }
 }

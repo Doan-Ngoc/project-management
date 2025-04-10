@@ -5,8 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Client } from './client.entity';
 import { ClientRepository } from './client.repository';
 import { JwtModule } from '../jwt/jwt.module';
+import { PermissionModule } from '../permission/permission.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([Client]), JwtModule],
+  imports: [TypeOrmModule.forFeature([Client]), JwtModule, PermissionModule],
   controllers: [ClientController],
   providers: [ClientService, ClientRepository],
   exports: [ClientService],

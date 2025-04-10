@@ -17,6 +17,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
+
   hashPassword(password: string) {
     const salt = bcrypt.genSaltSync();
     return bcrypt.hashSync(password, salt);
@@ -34,9 +35,10 @@ export class AuthService {
       user.hashed_password,
     );
     if (!checkPassword) throw new BadRequestException('Password incorrect');
+
     return {
       accessToken: this.jwtService.sign(
-        { id: user.id },
+        { id: user.id, role_id: user.role.id },
         this.configService.get('JWT_ACCESS_KEY') as string,
         {
           expiresIn: this.configService.get('JWT_ACCESS_EXPIRE'),

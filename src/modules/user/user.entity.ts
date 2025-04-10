@@ -5,6 +5,8 @@ import {
   CreateDateColumn,
   JoinColumn,
   ManyToOne,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import WorkingUnit from '../working-unit/working-unit.entity';
 import { Role } from '../role/role.entity';
@@ -49,7 +51,7 @@ export class User {
   @Column({ type: 'text', nullable: true })
   profile_picture: string;
 
-  @ManyToOne(() => Role, { nullable: false })
+  @ManyToOne(() => Role, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'role_id' })
   role: Role;
 

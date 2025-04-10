@@ -3,12 +3,13 @@ import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { Client } from './client.entity';
 import { AuthGuard } from '../../guards/auth.guard';
-
+import { Auth } from 'src/decorators/auth.decorator';
+import { Permissions } from 'src/enum/permissions.enum';
 @Controller('client')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
-  @UseGuards(AuthGuard)
+  @Auth(Permissions.CREATE_CLIENT)
   @Post()
   async createClient(
     @Body() createClientDto: CreateClientDto,

@@ -15,6 +15,10 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
+  role_id: string;
+
+  @IsString()
+  @IsNotEmpty()
   working_unit_id: string;
 
   @IsString()
