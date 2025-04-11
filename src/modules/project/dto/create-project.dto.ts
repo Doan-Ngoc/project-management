@@ -16,7 +16,7 @@ export class CreateProjectDto {
 
   @IsUUID()
   @IsNotEmpty()
-  unitId: string;
+  workingUnitId: string;
 
   @IsUUID()
   clientId: string;

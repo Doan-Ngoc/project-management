@@ -31,7 +31,7 @@ export class Project {
 
   @ManyToOne(() => WorkingUnit, (unit) => unit.projects)
   @JoinColumn({ name: 'working_unit_id' })
-  unit: WorkingUnit;
+  workingUnit: WorkingUnit;
 
   @ManyToOne(() => Client, (client) => client.projects)
   @JoinColumn({ name: 'client_id' })

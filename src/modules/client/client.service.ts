@@ -2,6 +2,7 @@ import {
   Injectable,
   ConflictException,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { Client } from './client.entity';
@@ -22,5 +23,17 @@ export class ClientService {
       }
       throw new InternalServerErrorException();
     }
+  }
+
+  async getById(id: string): Promise<Client> {
+    const client = await this.clientRepository.findOne({
+      where: { id },
+    });
+
+    if (!client) {
+      throw new NotFoundException(`Client with ID ${id} not found`);
+    }
+
+    return client;
   }
 }

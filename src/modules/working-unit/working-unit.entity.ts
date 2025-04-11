@@ -13,6 +13,6 @@ export class WorkingUnit {
   @OneToMany(() => User, (user) => user.workingUnit)
   members: User[];
 
-  @OneToMany(() => Project, (project) => project.unit)
+  @OneToMany(() => Project, (project) => project.workingUnit)
   projects: Project[];
 }

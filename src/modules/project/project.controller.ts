@@ -3,6 +3,8 @@ import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { Auth } from 'src/decorators/auth.decorator';
 import { Permissions } from 'src/enum/permissions.enum';
+import { GetUser } from 'src/decorators/get-user.decorator';
+import { User } from '../user/user.entity';
 
 @Controller('project')
 export class ProjectController {
@@ -10,7 +12,7 @@ export class ProjectController {
 
   @Post()
   @Auth(Permissions.CREATE_PROJECT)
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectService.create(createProjectDto);
+  create(@Body() createProjectDto: CreateProjectDto, @GetUser() user: User) {
+    return this.projectService.create(createProjectDto, user.id);
   }
 }
