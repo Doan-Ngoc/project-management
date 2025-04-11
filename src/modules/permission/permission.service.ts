@@ -2,6 +2,7 @@ import {
   Injectable,
   ConflictException,
   InternalServerErrorException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { Permission } from './permission.entity';
@@ -23,7 +24,7 @@ export class PermissionService {
       if (error.code === '23505') {
         throw new ConflictException('Permission name already exists');
       }
-      throw new InternalServerErrorException();
+      throw new BadRequestException();
     }
   }
 

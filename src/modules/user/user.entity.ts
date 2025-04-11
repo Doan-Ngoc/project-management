@@ -8,12 +8,14 @@ import {
   JoinTable,
   ManyToMany,
 } from 'typeorm';
-import WorkingUnit from '../working-unit/working-unit.entity';
+import { WorkingUnit } from '../working-unit/working-unit.entity';
 import { Role } from '../role/role.entity';
 import { AccountStatus } from '../../enum/account-status.enum';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
 import { AccountType } from '../../enum/account-type.enum';
+import { Project } from '../project/project.entity';
+
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -51,11 +53,19 @@ export class User {
   @Column({ type: 'text', nullable: true })
   profile_picture: string;
 
-  @ManyToOne(() => Role, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => Role, (role) => role.users, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'role_id' })
   role: Role;
 
-  @ManyToOne(() => WorkingUnit, { nullable: true })
+  @ManyToOne(() => WorkingUnit, (workingUnit) => workingUnit.members, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'working_unit_id' })
-  working_unit: WorkingUnit;
+  workingUnit: WorkingUnit;
+
+  @ManyToMany(() => Project, (project) => project.members)
+  projects: Project[];
 }
