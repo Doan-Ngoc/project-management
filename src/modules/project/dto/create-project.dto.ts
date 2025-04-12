@@ -22,7 +22,7 @@ export class CreateProjectDto {
   clientId: string;
 
   @IsDate()
-  startedFrom: Date;
+  startFrom: Date;
 
   @IsDate()
   dueDate: Date;

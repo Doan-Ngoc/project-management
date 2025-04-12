@@ -11,4 +11,10 @@ export class Permission {
 
   @ManyToMany(() => Role, (role) => role.permissions, { onDelete: 'CASCADE' })
   roles: Role[];
+
+  @Column({ type: 'varchar', length: 255 })
+  path: string;
+
+  @Column({ type: 'varchar', length: 50 })
+  method: string;
 }

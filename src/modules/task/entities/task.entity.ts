@@ -37,14 +37,11 @@ export class Task extends BaseEntity {
   @Column({ type: 'date' })
   dueDate: Date;
 
-  @Column({ type: 'boolean', default: false })
-  isDeleted: boolean;
-
-  @DeleteDateColumn()
+  @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
   @Column({ type: 'text', nullable: true })
-  deletedReason: string;
+  deleted_reason: string;
 
   @ManyToOne(() => Project, (project) => project.tasks, {
     nullable: false,
@@ -60,6 +57,10 @@ export class Task extends BaseEntity {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'created_by' })
   createdBy: User;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'updated_by' })
+  updatedBy: User;
 
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'deleted_by' })

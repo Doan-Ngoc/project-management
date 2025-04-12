@@ -6,6 +6,7 @@ import {
   JoinTable,
   JoinColumn,
   OneToMany,
+  DeleteDateColumn,
 } from 'typeorm';
 import { WorkingUnit } from '../../working-unit/entities/working-unit.entity';
 import { Client } from '../../client/entities/client.entity';
@@ -22,19 +23,8 @@ export class Project extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @ManyToOne(() => WorkingUnit, (unit) => unit.projects)
-  @JoinColumn({ name: 'working_unit_id' })
-  workingUnit: WorkingUnit;
-
-  @ManyToOne(() => Client, (client) => client.projects)
-  @JoinColumn({ name: 'client_id' })
-  client: Client;
-
   @Column({ type: 'date' })
-  startedFrom: Date;
-
-  @Column({ type: 'date' })
-  dueDate: Date;
+  due_date: Date;
 
   @Column({
     type: 'enum',
@@ -43,15 +33,23 @@ export class Project extends BaseEntity {
   })
   status: ProjectStatus;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'created_by' })
-  createdBy: User;
-
   @Column({ type: 'integer', nullable: true })
   pm_number: number;
 
   @Column({ type: 'integer', nullable: true })
   dev_number: number;
+
+  @ManyToOne(() => WorkingUnit, (unit) => unit.projects)
+  @JoinColumn({ name: 'working_unit_id' })
+  workingUnit: WorkingUnit;
+
+  @ManyToOne(() => Client, (client) => client.projects)
+  @JoinColumn({ name: 'client_id' })
+  client: Client;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'created_by' })
+  createdBy: User;
 
   @ManyToMany(() => User, (user) => user.projects)
   @JoinTable({

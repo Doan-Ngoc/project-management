@@ -27,11 +27,11 @@ export class UserService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { password, role_id, working_unit_id, ...createUserData } =
+    const { password, roleId, workingUnitId, ...createUserData } =
       createUserDto;
     const hashedPassword = this.authService.hashPassword(password);
-    const role = await this.roleService.getById(role_id);
-    const workingUnit = await this.workingUnitService.getById(working_unit_id);
+    const role = await this.roleService.getById(roleId);
+    const workingUnit = await this.workingUnitService.getById(workingUnitId);
 
     const userData = {
       ...createUserData,

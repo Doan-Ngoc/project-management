@@ -1,0 +1,125 @@
+[33mcommit 3af32bb63532e4b90706373de454a0cc0e8759af[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdb-setup[m[33m)[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Sat Apr 12 16:55:36 2025 +0700
+
+    Create TaskUpdate entity
+
+[33mcommit 588cacf14ad77603f058e946f40be229c0563ce1[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Sat Apr 12 15:42:45 2025 +0700
+
+    Create Task module
+
+[33mcommit 7f3d9db4155679e91cf4b452dfdcdadb03b23f38[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Sat Apr 12 12:51:12 2025 +0700
+
+    Reorganize folder structure, create Base Entity, change table names to plural
+
+[33mcommit 8664359dd75ad0ae944c5c77c3a69b90c41d2634[m[33m ([m[1;31morigin/db-setup[m[33m)[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Fri Apr 11 17:24:48 2025 +0700
+
+    Create new project feature
+
+[33mcommit 61b34708b819acb89b236d424e10bab63f85c94c[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Fri Apr 11 13:39:36 2025 +0700
+
+    Create project table & logic to make new project
+
+[33mcommit 8763ed6c4b7ae413de09db70eaef146343b49473[m[33m ([m[1;31morigin/auth[m[33m, [m[1;32mauth[m[33m)[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Thu Apr 10 15:07:02 2025 +0700
+
+    Dơne with RBAC
+
+[33mcommit b5511cf54a9f4c47fc32f0dd4743eef6442cf105[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Wed Apr 9 19:58:55 2025 +0700
+
+    Created AuthGuard for authentication
+
+[33mcommit d3949b0fcfbadf3c9af1ce9ff4ca681ea24b8dcb[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Wed Apr 9 19:45:24 2025 +0700
+
+    Create permission and client entities
+
+[33mcommit f122eb367bfb05a89117c6acf7db3f59c1304dd0[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Wed Apr 9 16:49:55 2025 +0700
+
+    Login feature
+
+[33mcommit fea30cb52a712870a6d3314625de91a9d8fe57f3[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Wed Apr 9 09:56:35 2025 +0700
+
+    Fix error regarding role in signup feature
+
+[33mcommit 2cccc182e8d5ac06c0d9dacdeeb3fab1d3d02c2a[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Wed Apr 9 08:50:55 2025 +0700
+
+    Replace InjectRepository with separate repositories
+
+[33mcommit bcbb32818c9b0acf84d7648e00065e4a7c879909[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Tue Apr 8 20:55:41 2025 +0700
+
+    Signup feature
+
+[33mcommit f7fbf0fd51eb97fc4783ba392dad418d946f0f81[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Tue Apr 8 13:57:27 2025 +0700
+
+    Update database configuration in TypeOrmModule
+
+[33mcommit d510d81cf9c63ce28ed6bf457435801bfc19c097[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Tue Apr 8 10:26:55 2025 +0700
+
+    Rearrange folders by creating modules folder
+
+[33mcommit 6cc24d30d3015651c6258c87f54b9a9119f73539[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Tue Apr 8 10:06:05 2025 +0700
+
+    Create user entity
+
+[33mcommit eb427f0d9006193bcb3f23d0dcb794a6a4d561b3[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Tue Apr 8 09:28:20 2025 +0700
+
+    Create role entity
+
+[33mcommit 002528f21ed9ca1e3e209279b4f9b2d84aa08116[m[33m ([m[1;31morigin/base-setup[m[33m, [m[1;32mbase-setup[m[33m)[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Mon Apr 7 20:46:07 2025 +0700
+
+    Setup db connection and create WorkingUnit entity
+
+[33mcommit a185f5768da16369361871a95e8a24662764684f[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Mon Apr 7 17:13:07 2025 +0700
+
+    Setting up TypeOrmModule
+
+[33mcommit 1d788ce3a6b16a0cbd49f34c549e55ae0a2f529f[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Mon Apr 7 16:40:41 2025 +0700
+
+    Setting up ConfigModule
+
+[33mcommit 15330907d8bbea3a14adbdd543165405aff75cab[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Mon Apr 7 15:59:53 2025 +0700
+
+    Install packages
+
+[33mcommit 3c23a1ad484be8c80370bb4a3bf3f27ec6a859e3[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/dev[m[33m, [m[1;32mmain[m[33m, [m[1;32mdev[m[33m)[m
+Author: Minh Ngoc Doan <minhngocdoan3112@gmail.com>
+Date:   Mon Apr 7 15:15:05 2025 +0700
+
+    first commit

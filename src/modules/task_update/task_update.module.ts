@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { TaskUpdateService } from './services/task_update.service';
-import { TaskUpdateController } from './task_update.controller';
+import { TaskUpdateService } from './services/task-update.service';
+import { TaskUpdateController } from './task-update.controller';
 
 @Module({
   controllers: [TaskUpdateController],
