@@ -1,12 +1,10 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user/user.entity';
-import { Project } from '../project/project.entity';
+import { User } from '../../user/entities/user.entity';
+import { Project } from '../../project/entities/project.entity';
+import { BaseEntity } from '@/databases/base.entity';
 
-@Entity('working_unit')
-export class WorkingUnit {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity('working_units')
+export class WorkingUnit extends BaseEntity {
   @Column({ length: 255, unique: true })
   name: string;
 

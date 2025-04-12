@@ -9,20 +9,17 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
 } from 'typeorm';
-import { WorkingUnit } from '../working-unit/working-unit.entity';
-import { Client } from '../client/client.entity';
-import { User } from '../user/user.entity';
-
+import { WorkingUnit } from '../../working-unit/entities/working-unit.entity';
+import { Client } from '../../client/entities/client.entity';
+import { User } from '../../user/entities/user.entity';
+import { BaseEntity } from '@/databases/base.entity';
 export enum ProjectStatus {
   ACTIVE = 'active',
   COMPLETED = 'completed',
 }
 
-@Entity()
-export class Project {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity('projects')
+export class Project extends BaseEntity {
   @Column({ type: 'varchar', length: 255, unique: true })
   name: string;
 
@@ -52,7 +49,7 @@ export class Project {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'created_by' })
-  creator: User;
+  createdBy: User;
 
   @Column({ type: 'integer', nullable: true })
   pm_number: number;

@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
-import { ProjectService } from './project.service';
+import { ProjectService } from './services/project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { Auth } from 'src/decorators/auth.decorator';
 import { Permissions } from 'src/enum/permissions.enum';
 import { GetUser } from 'src/decorators/get-user.decorator';
-import { User } from '../user/user.entity';
+import { User } from '../user/entities/user.entity';
 
 @Controller('project')
 export class ProjectController {

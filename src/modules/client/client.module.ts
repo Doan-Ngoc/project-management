@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ClientService } from './client.service';
+import { ClientService } from './services/client.service';
 import { ClientController } from './client.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Client } from './client.entity';
-import { ClientRepository } from './client.repository';
+import { Client } from './entities/client.entity';
+import { ClientRepository } from './repositories/client.repository';
 import { JwtModule } from '../jwt/jwt.module';
 import { PermissionModule } from '../permission/permission.module';
 @Module({

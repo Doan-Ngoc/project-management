@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { WorkingUnitRepository } from './working-unit.repository';
-import { WorkingUnit } from './working-unit.entity';
+import { WorkingUnitRepository } from '../repositories/working-unit.repository';
+import { WorkingUnit } from '../entities/working-unit.entity';
 
 @Injectable()
 export class WorkingUnitService {

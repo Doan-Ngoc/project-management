@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { RoleRepository } from './role.repository';
-import { Role } from './role.entity';
+import { RoleRepository } from '../repositories/role.repository';
+import { Role } from '../entities/role.entity';
 
 @Injectable()
 export class RoleService {

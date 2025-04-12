@@ -4,10 +4,10 @@ import {
   InternalServerErrorException,
   BadRequestException,
 } from '@nestjs/common';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { Permission } from './permission.entity';
-import { PermissionRepository } from './permission.repository';
-import { Role } from '../role/role.entity';
+import { CreatePermissionDto } from '../dto/create-permission.dto';
+import { Permission } from '../entities/permission.entity';
+import { PermissionRepository } from '../repositories/permission.repository';
+import { Role } from '../../role/entities/role.entity';
 
 @Injectable()
 export class PermissionService {

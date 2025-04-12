@@ -8,19 +8,17 @@ import {
   JoinTable,
   ManyToMany,
 } from 'typeorm';
-import { WorkingUnit } from '../working-unit/working-unit.entity';
-import { Role } from '../role/role.entity';
-import { AccountStatus } from '../../enum/account-status.enum';
+import { WorkingUnit } from '../../working-unit/entities/working-unit.entity';
+import { Role } from '../../role/entities/role.entity';
+import { AccountStatus } from '../../../enum/account-status.enum';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
-import { AccountType } from '../../enum/account-type.enum';
-import { Project } from '../project/project.entity';
+import { AccountType } from '../../../enum/account-type.enum';
+import { Project } from '../../project/entities/project.entity';
+import { BaseEntity } from '@/databases/base.entity';
 
-@Entity('user')
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity('users')
+export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 255, unique: true })
   username: string;
 
@@ -46,9 +44,6 @@ export class User {
     enum: AccountStatus,
   })
   account_status: AccountStatus;
-
-  @CreateDateColumn()
-  created_at: Date;
 
   @Column({ type: 'text', nullable: true })
   profile_picture: string;

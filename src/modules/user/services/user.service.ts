@@ -7,14 +7,14 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dtos';
-import { User } from './user.entity';
+import { CreateUserDto } from '..';
+import { User } from '../entities/user.entity';
 import { AuthService } from 'src/modules/auth/auth.service';
-import { UserRepository } from './user.repository';
+import { UserRepository } from '../repositories/user.repository';
 import { AccountStatus } from 'src/enum/account-status.enum';
 import { AccountType } from 'src/enum/account-type.enum';
-import { RoleService } from '../role/role.service';
-import { WorkingUnitService } from '../working-unit/working-unit.service';
+import { RoleService } from '../../role/services/role.service';
+import { WorkingUnitService } from '../../working-unit/services/working-unit.service';
 
 @Injectable()
 export class UserService {
@@ -30,7 +30,6 @@ export class UserService {
     const { password, role_id, working_unit_id, ...createUserData } =
       createUserDto;
     const hashedPassword = this.authService.hashPassword(password);
-
     const role = await this.roleService.getById(role_id);
     const workingUnit = await this.workingUnitService.getById(working_unit_id);
 
@@ -56,6 +55,18 @@ export class UserService {
       }
       throw new BadRequestException();
     }
+  }
+
+  async getById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    return user;
   }
 
   async getUserByUserName(username: string): Promise<User> {

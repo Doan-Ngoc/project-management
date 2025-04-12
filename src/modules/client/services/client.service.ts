@@ -4,10 +4,10 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateClientDto } from './dto/create-client.dto';
-import { Client } from './client.entity';
+import { CreateClientDto } from '../dto/create-client.dto';
+import { Client } from '../entities/client.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClientRepository } from './client.repository';
+import { ClientRepository } from '../repositories/client.repository';
 
 @Injectable()
 export class ClientService {

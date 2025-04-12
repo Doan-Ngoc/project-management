@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { WorkingUnitService } from './working-unit.service';
+import { WorkingUnitService } from './services/working-unit.service';
 import { WorkingUnitController } from './working-unit.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { WorkingUnit } from './working-unit.entity';
-import { WorkingUnitRepository } from './working-unit.repository';
+import { WorkingUnit } from './entities/working-unit.entity';
+import { WorkingUnitRepository } from './repositories/working-unit.repository';
 
 @Module({
   controllers: [WorkingUnitController],

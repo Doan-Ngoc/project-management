@@ -1,8 +1,7 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
-import { ClientService } from './client.service';
+import { ClientService } from './services/client.service';
 import { CreateClientDto } from './dto/create-client.dto';
-import { Client } from './client.entity';
-import { AuthGuard } from '../../guards/auth.guard';
+import { Client } from './entities/client.entity';
 import { Auth } from 'src/decorators/auth.decorator';
 import { Permissions } from 'src/enum/permissions.enum';
 @Controller('client')
