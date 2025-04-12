@@ -4,10 +4,14 @@ import {
   ManyToOne,
   JoinColumn,
   DeleteDateColumn,
+  ManyToMany,
+  JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Project } from '../../project/entities/project.entity';
 import { User } from '../../user/entities/user.entity';
 import { BaseEntity } from '@/databases/base.entity';
+import { TaskUpdate } from '../../task_update/entities/task-update.entity';
 
 export enum TaskStatus {
   IN_PROGRESS = 'in_progress',
@@ -49,6 +53,10 @@ export class Task extends BaseEntity {
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
+  @ManyToMany(() => User, (user) => user.tasks)
+  @JoinTable({ name: 'task_member' })
+  members: User[];
+
   @ManyToOne(() => User)
   @JoinColumn({ name: 'created_by' })
   createdBy: User;
@@ -56,4 +64,7 @@ export class Task extends BaseEntity {
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'deleted_by' })
   deletedBy: User;
+
+  @OneToMany(() => TaskUpdate, (update) => update.task)
+  updates: TaskUpdate[];
 }

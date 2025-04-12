@@ -16,6 +16,7 @@ import { IsEmail } from 'class-validator';
 import { AccountType } from '../../../enum/account-type.enum';
 import { Project } from '../../project/entities/project.entity';
 import { BaseEntity } from '@/databases/base.entity';
+import { Task } from '@/modules/task/entities/task.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -65,4 +66,7 @@ export class User extends BaseEntity {
 
   @ManyToMany(() => Project, (project) => project.members)
   projects: Project[];
+
+  @ManyToMany(() => Task, (task) => task.members)
+  tasks: Task[];
 }
