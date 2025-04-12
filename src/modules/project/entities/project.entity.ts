@@ -4,19 +4,15 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { WorkingUnit } from '../../working-unit/entities/working-unit.entity';
 import { Client } from '../../client/entities/client.entity';
 import { User } from '../../user/entities/user.entity';
 import { BaseEntity } from '@/databases/base.entity';
-export enum ProjectStatus {
-  ACTIVE = 'active',
-  COMPLETED = 'completed',
-}
+import { Task } from '../../task/entities/task.entity';
+import { ProjectStatus } from '@/enum/project-status.enum';
 
 @Entity('projects')
 export class Project extends BaseEntity {
@@ -70,4 +66,7 @@ export class Project extends BaseEntity {
     },
   })
   members: User[];
+
+  @OneToMany(() => Task, (task) => task.project)
+  tasks: Task[];
 }

@@ -6,7 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Project, ProjectStatus } from '../entities/project.entity';
+import { ProjectStatus } from '@/enum/project-status.enum';
+import { Project } from '../entities/project.entity';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { User } from '../../user/entities/user.entity';
 import { ProjectRepository } from '../repositories/project.repository';

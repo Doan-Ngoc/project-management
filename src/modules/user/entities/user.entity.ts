@@ -36,12 +36,14 @@ export class User extends BaseEntity {
   @Column({
     type: 'enum',
     enum: AccountType,
+    default: AccountType.MEMBER,
   })
   account_type: AccountType;
 
   @Column({
     type: 'enum',
     enum: AccountStatus,
+    default: AccountStatus.PENDING,
   })
   account_status: AccountStatus;
 
