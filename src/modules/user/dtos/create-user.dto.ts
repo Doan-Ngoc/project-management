@@ -24,7 +24,6 @@ export class CreateUserDto {
   roleId: string;
 
   @IsUUID()
-  @IsNotEmpty()
   workingUnitId: string;
 
   @IsString()
