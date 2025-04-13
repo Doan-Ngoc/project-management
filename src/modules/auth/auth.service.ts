@@ -31,6 +31,7 @@ export class AuthService {
   async logIn(authLogInDto: AuthLogInDto) {
     const { username, password } = authLogInDto;
     const user = await this.userService.getUserByUserName(username);
+    console.log(user);
     const checkPassword = await this.comparePassword(
       password,
       user.hashed_password,
@@ -39,7 +40,11 @@ export class AuthService {
 
     return {
       accessToken: this.jwtService.sign(
-        { id: user.id, role_id: user.role.id },
+        {
+          id: user.id,
+          ...(user.role && { roleId: user.role.id }),
+          accountType: user.account_type,
+        },
         this.configService.get('JWT_ACCESS_KEY') as string,
         {
           expiresIn: this.configService.get('JWT_ACCESS_EXPIRE'),

@@ -11,6 +11,7 @@ import { JwtService } from '../modules/jwt/jwt.service';
 import { Reflector } from '@nestjs/core';
 import { PERMISSIONS_KEY } from 'src/decorators/require-permission.decorator';
 import { PermissionService } from 'src/modules/permission/services/permission.service';
+import { AccountType } from '@/enum/account-type.enum';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -34,6 +35,10 @@ export class AuthGuard implements CanActivate {
       this.configService.get('JWT_ACCESS_KEY') as string,
     );
 
+    //Bypass authorization check for admin
+    if (decode.accountType === AccountType.ADMIN) {
+      return true;
+    }
     // Authorization check
     const requiredPermission = this.reflector.get<string>(
       PERMISSIONS_KEY,
@@ -44,7 +49,7 @@ export class AuthGuard implements CanActivate {
     }
     const allowedRoleIds =
       await this.permissionService.getPermissionRoles(requiredPermission);
-    const userRoleId = decode.role_id;
+    const userRoleId = decode.roleId;
 
     if (!allowedRoleIds.includes(userRoleId)) {
       return false;

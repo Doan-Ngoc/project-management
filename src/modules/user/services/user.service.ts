@@ -6,6 +6,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from '..';
 import { User } from '../entities/user.entity';
@@ -15,6 +16,7 @@ import { AccountStatus } from 'src/enum/account-status.enum';
 import { AccountType } from 'src/enum/account-type.enum';
 import { RoleService } from '../../role/services/role.service';
 import { WorkingUnitService } from '../../working-unit/services/working-unit.service';
+import { Auth } from '@/decorators/auth.decorator';
 
 @Injectable()
 export class UserService {
@@ -35,26 +37,25 @@ export class UserService {
 
     const userData = {
       ...createUserData,
+      username: createUserDto.email,
       role,
       workingUnit,
       hashed_password: hashedPassword,
       account_status: AccountStatus.PENDING,
       account_type: AccountType.MEMBER,
     };
+    console.log(userData);
 
     try {
       const newUser = this.userRepository.create(userData);
-      return await this.userRepository.save(newUser);
+      const saveUser = await this.userRepository.save(newUser);
+      return User.plainToClass(saveUser);
     } catch (error) {
       if (error.code === '23505') {
-        if (error.detail?.includes('username')) {
-          throw new ConflictException('Username already exists');
-        } else if (error.detail?.includes('email')) {
-          throw new ConflictException('Email already exists');
-        }
+        throw new ConflictException('Email already exists');
       }
-      throw new BadRequestException();
     }
+    throw new BadRequestException();
   }
 
   async getById(id: string): Promise<User> {

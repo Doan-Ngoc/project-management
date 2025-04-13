@@ -1,7 +1,9 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 // import { UserService } from './services/user.service';
 // import { CreateUserDto } from './dtos/create-user.dto';
 import { CreateUserDto, UserService } from '.';
+import { Auth } from '@/decorators/auth.decorator';
+import { Permissions } from '@/enum/permissions.enum';
 
 @Controller('user')
 export class UserController {
@@ -9,5 +11,11 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
+  }
+
+  @Auth(Permissions.CREATE_CLIENT)
+  @Get()
+  getUsers() {
+    return 'abc';
   }
 }

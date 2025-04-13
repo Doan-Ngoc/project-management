@@ -9,15 +9,11 @@ import {
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  username: string;
+  email: string;
 
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @IsString()
-  @IsNotEmpty()
-  employeeName: string;
 
   @IsUUID()
   @IsNotEmpty()

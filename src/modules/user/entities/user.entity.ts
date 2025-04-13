@@ -21,15 +21,15 @@ import { Task } from '@/modules/task/entities/task.entity';
 @Entity('users')
 export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 255, unique: true })
-  username: string;
+  @IsEmail()
+  email: string;
 
   @Column({ type: 'varchar', length: 255 })
   @Exclude()
   hashed_password: string;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
-  @IsEmail()
-  email: string;
+  @Column({ type: 'varchar', length: 255 })
+  username: string;
 
   @Column({ type: 'varchar', length: 255 })
   employee_name: string;
@@ -52,7 +52,6 @@ export class User extends BaseEntity {
   profile_picture: string;
 
   @ManyToOne(() => Role, (role) => role.users, {
-    nullable: false,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'role_id' })

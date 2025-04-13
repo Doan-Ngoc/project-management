@@ -8,12 +8,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoleModule } from '../role/role.module';
 import { WorkingUnitModule } from '../working-unit/working-unit.module';
 import { UserService, UserController, UserRepository, User } from '.';
+import { JwtModule } from '../jwt/jwt.module';
+import { PermissionModule } from '../permission/permission.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     forwardRef(() => AuthModule),
     RoleModule,
     WorkingUnitModule,
+    JwtModule,
+    PermissionModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository],
