@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { JwtService } from '../modules/jwt/services/jwt.service';
 import { Reflector } from '@nestjs/core';
-import { PERMISSIONS_KEY } from 'src/decorators/require-permission.decorator';
+import { PERMISSIONS_KEY } from '@/decorators/auth.decorator';
 import { PermissionService } from 'src/modules/permission/services/permission.service';
 import { AccountType } from '@/enum/account-type.enum';
 import { UserService } from '@/modules/user/services/user.service';
@@ -27,7 +27,6 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-
     // Authentication check
     const token = this.extractTokenFromHeader(request);
     if (!token) {
@@ -59,7 +58,6 @@ export class AuthGuard implements CanActivate {
     const allowedRoleIds =
       await this.permissionService.getPermissionRoles(requiredPermission);
     const userRoleId = user.role.id;
-
     if (!allowedRoleIds.includes(userRoleId)) {
       throw new ForbiddenException();
     }

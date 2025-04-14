@@ -4,7 +4,7 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { Client } from './entities/client.entity';
 import { Auth } from 'src/decorators/auth.decorator';
 import { Permissions } from 'src/enum/permissions.enum';
-@Controller('client')
+@Controller('clients')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 

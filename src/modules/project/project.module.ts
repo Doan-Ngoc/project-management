@@ -11,6 +11,7 @@ import { PermissionModule } from '../permission/permission.module';
 import { WorkingUnitModule } from '../working-unit/working-unit.module';
 import { ClientModule } from '../client/client.module';
 import { UserModule } from '../user/user.module';
+import { AuthModule } from '../auth/auth.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Project]),
@@ -19,6 +20,7 @@ import { UserModule } from '../user/user.module';
     WorkingUnitModule,
     ClientModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [ProjectController],
   providers: [ProjectService, ProjectRepository],

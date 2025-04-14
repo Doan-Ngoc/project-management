@@ -17,7 +17,7 @@ import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from '../user/entities/user.entity';
 import { ProjectMemberGuard } from '@/guards/project-member.guard';
 
-@Controller('task')
+@Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 

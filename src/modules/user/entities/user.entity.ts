@@ -24,20 +24,21 @@ export class User extends BaseEntity {
   @IsEmail()
   email: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'hashed_password' })
   @Exclude()
   hashedPassword: string;
 
   @Column({ type: 'varchar', length: 255 })
   username: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'employee_name' })
   employeeName: string;
 
   @Column({
     type: 'enum',
     enum: AccountType,
     default: AccountType.MEMBER,
+    name: 'account_type',
   })
   accountType: AccountType;
 
@@ -45,10 +46,11 @@ export class User extends BaseEntity {
     type: 'enum',
     enum: AccountStatus,
     default: AccountStatus.PENDING,
+    name: 'account_status',
   })
   accountStatus: AccountStatus;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true, name: 'profile_picture' })
   profilePicture: string;
 
   @ManyToOne(() => Role, (role) => role.users, {

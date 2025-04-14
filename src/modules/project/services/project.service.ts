@@ -11,12 +11,15 @@ import { ProjectStatus } from '@/enum/project-status.enum';
 import { Project } from '../entities/project.entity';
 import { CreateProjectDto } from '../dtos/create-project.dto';
 import { User } from '../../user/entities/user.entity';
+import { UserService } from '../../user/services/user.service';
 import { ProjectRepository } from '../repositories/project.repository';
 import { WorkingUnitService } from '../../working-unit/services/working-unit.service';
 import { ClientService } from '../../client/services/client.service';
-import { UserService } from '../../user/services/user.service';
 import { AddProjectMemberDto } from '../dtos/add-project-member.dto';
 import { RemoveProjectMemberDto } from '../dtos/remove-project-member.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { paginate } from 'nestjs-typeorm-paginate';
 @Injectable()
 export class ProjectService {
   constructor(
@@ -25,6 +28,30 @@ export class ProjectService {
     private readonly clientService: ClientService,
     private readonly userService: UserService,
   ) {}
+
+  async getProjects(
+    options: IPaginationOptions,
+    query?: string,
+  ): Promise<Pagination<Project>> {
+    const queryBuilder = this.projectRepository.createQueryBuilder('project');
+    if (query) {
+      queryBuilder.where('LOWER(project.name) LIKE :query', {
+        query: `%${query.toLowerCase()}%`,
+      });
+    }
+    queryBuilder
+      .orderBy(
+        `CASE 
+     WHEN project.status = 'active' THEN 1
+     WHEN project.status = 'completed' THEN 2
+     WHEN project.status = 'cancelled' THEN 3
+     ELSE 4
+   END`,
+      )
+      .addOrderBy('project.createdAt', 'DESC');
+
+    return paginate<Project>(queryBuilder, options);
+  }
 
   async create(createProjectDto: CreateProjectDto, userId: string) {
     const { workingUnitId, clientId, dueDate, ...projectData } =

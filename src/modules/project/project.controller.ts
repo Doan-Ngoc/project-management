@@ -6,6 +6,9 @@ import {
   Param,
   UseGuards,
   Delete,
+  ParseIntPipe,
+  DefaultValuePipe,
+  Query,
 } from '@nestjs/common';
 import { ProjectService } from './services/project.service';
 import { CreateProjectDto } from './dtos/create-project.dto';
@@ -17,13 +20,30 @@ import { Project } from './entities/project.entity';
 import { AddProjectMemberDto } from './dtos/add-project-member.dto';
 import { ProjectMemberGuard } from '@/guards/project-member.guard';
 import { RemoveProjectMemberDto } from './dtos/remove-project-member.dto';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
-@Controller('project')
+@Controller('projects')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Post()
+  // @Auth(Permissions.GET_PROJECTS)
+  // @Get()
+  // async getProjects(
+  //   @Query('search') query: string,
+  //   @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+  //   @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number,
+  // ): Promise<Pagination<Project>> {
+  //   limit = limit > 10 ? 10 : limit;
+  //   const options: IPaginationOptions = {
+  //     page,
+  //     limit,
+  //     route: '/projects',
+  //   };
+  //   return this.projectService.getProjects(options, query);
+  // }
+
   @Auth(Permissions.CREATE_PROJECT)
+  @Post()
   create(@Body() createProjectDto: CreateProjectDto, @GetUser() user: User) {
     return this.projectService.create(createProjectDto, user.id);
   }
@@ -31,6 +51,22 @@ export class ProjectController {
   @Get(':id')
   getProjectById(@Param('id') id: string): Promise<Project> {
     return this.projectService.getById(id);
+  }
+
+  @Get()
+  @Auth(Permissions.GET_PROJECTS)
+  async getProjects(
+    @Query('search') query: string,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number,
+  ): Promise<Pagination<Project>> {
+    limit = limit > 10 ? 10 : limit;
+    const options: IPaginationOptions = {
+      page,
+      limit,
+      route: '/projects',
+    };
+    return this.projectService.getProjects(options, query);
   }
 
   @Post('/members')

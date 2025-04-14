@@ -5,7 +5,7 @@ import { CreateUserDto } from './dtos';
 import { Auth } from '@/decorators/auth.decorator';
 import { Permissions } from '@/enum/permissions.enum';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Post()
