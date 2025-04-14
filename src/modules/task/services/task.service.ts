@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from '../dto/create-task.dto';
-import { Task, TaskStatus } from '../entities/task.entity';
+import { Task } from '../entities/task.entity';
 import { ProjectService } from '../../project/services/project.service';
 import { UserService } from '../../user/services/user.service';
 
@@ -21,16 +21,8 @@ export class TaskService {
 
   async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
     const { projectId, dueDate, ...taskData } = createTaskDto;
-
-    // Get project
     const project = await this.projectService.getById(projectId);
-
-    // Get user and check if they are a project member
     const user = await this.userService.getById(userId);
-    const isMember = project.members.some((member) => member.id === user.id);
-    if (!isMember) {
-      throw new BadRequestException('User is not a member of this project');
-    }
 
     // Check if due date is in the past
     if (dueDate && new Date(dueDate) < new Date()) {
@@ -40,8 +32,7 @@ export class TaskService {
     // Create the task
     const newTask = this.taskRepository.create({
       ...taskData,
-      dueDate,
-      status: TaskStatus.IN_PROGRESS,
+      dueDate: dueDate ? new Date(dueDate) : undefined,
       project,
       createdBy: user,
     });

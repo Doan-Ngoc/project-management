@@ -10,6 +10,7 @@ import { JwtModule } from './modules/jwt/jwt.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { ClientModule } from './modules/client/client.module';
 import { ProjectModule } from './modules/project/project.module';
+import { TaskModule } from './modules/task/task.module';
 import typeorm from './databases/typeorm';
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import typeorm from './databases/typeorm';
     PermissionModule,
     ClientModule,
     ProjectModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],

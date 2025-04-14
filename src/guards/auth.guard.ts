@@ -41,10 +41,11 @@ export class AuthGuard implements CanActivate {
 
     request.user = user;
 
-    if (user.account_status !== AccountStatus.ACTIVE) return false;
+    //Only allow active users
+    if (user.accountStatus !== AccountStatus.ACTIVE) return false;
 
     //Bypass authorization check for admin
-    if (user.account_type === AccountType.ADMIN) {
+    if (user.accountType === AccountType.ADMIN) {
       return true;
     }
     // Authorization check

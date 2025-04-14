@@ -4,8 +4,11 @@ import {
   ExecutionContext,
   ForbiddenException,
   BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ProjectService } from '../modules/project/services/project.service';
+import { AccountStatus } from '@/enum/account-status.enum';
+import { AccountType } from '@/enum/account-type.enum';
 
 @Injectable()
 export class ProjectMemberGuard implements CanActivate {
@@ -13,12 +16,21 @@ export class ProjectMemberGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
 
     // Get projectId from either params or body
     const projectId = request.params.projectId || request.body.projectId;
     if (!projectId) {
       throw new BadRequestException('Project ID is missing from request');
+    }
+
+    const user = request.user;
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    //Bypass authorization check for admin
+    if (user.accountType === AccountType.ADMIN) {
+      return true;
     }
 
     // Get project with its members

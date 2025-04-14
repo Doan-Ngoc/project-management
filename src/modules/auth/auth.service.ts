@@ -33,7 +33,7 @@ export class AuthService {
     const user = await this.userService.getUserByUserName(username);
     const checkPassword = await this.comparePassword(
       password,
-      user.hashed_password,
+      user.hashedPassword,
     );
     if (!checkPassword) throw new BadRequestException('Password incorrect');
 
@@ -42,7 +42,7 @@ export class AuthService {
         {
           id: user.id,
           ...(user.role && { roleId: user.role.id }),
-          accountType: user.account_type,
+          accountType: user.accountType,
         },
         this.configService.get('JWT_ACCESS_KEY') as string,
         {

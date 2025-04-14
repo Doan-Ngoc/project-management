@@ -40,7 +40,7 @@ export class ProjectService {
         ...projectData,
         workingUnit,
         client,
-        dueDate,
+        dueDate: dueDate ? new Date(dueDate) : undefined,
         createdBy: user,
         status: ProjectStatus.ACTIVE,
         //If the creator is a project manager, add them as a project member (not if they are an admin)

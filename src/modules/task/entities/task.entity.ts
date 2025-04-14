@@ -12,13 +12,7 @@ import { Project } from '../../project/entities/project.entity';
 import { User } from '../../user/entities/user.entity';
 import { BaseEntity } from '@/databases/base.entity';
 import { TaskUpdate } from '../../task_update/entities/task-update.entity';
-
-export enum TaskStatus {
-  IN_PROGRESS = 'in_progress',
-  COMPLETED = 'completed',
-  EXPIRED = 'expired',
-}
-
+import { TaskStatus } from '@/enum/task-status.enum';
 @Entity('tasks')
 export class Task extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
@@ -30,11 +24,11 @@ export class Task extends BaseEntity {
   @Column({
     type: 'enum',
     enum: TaskStatus,
-    default: TaskStatus.IN_PROGRESS,
+    default: TaskStatus.PENDING,
   })
   status: TaskStatus;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   dueDate: Date;
 
   @DeleteDateColumn({ name: 'deleted_at' })

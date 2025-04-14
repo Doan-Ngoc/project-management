@@ -40,9 +40,9 @@ export class UserService {
       username: createUserDto.email,
       role,
       workingUnit,
-      hashed_password: hashedPassword,
-      account_status: AccountStatus.PENDING,
-      account_type: AccountType.MEMBER,
+      hashedPassword,
+      accountStatus: AccountStatus.PENDING,
+      accountType: AccountType.MEMBER,
     };
 
     try {

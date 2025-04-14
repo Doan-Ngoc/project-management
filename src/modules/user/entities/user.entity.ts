@@ -26,34 +26,34 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar', length: 255 })
   @Exclude()
-  hashed_password: string;
+  hashedPassword: string;
 
   @Column({ type: 'varchar', length: 255 })
   username: string;
 
   @Column({ type: 'varchar', length: 255 })
-  employee_name: string;
+  employeeName: string;
 
   @Column({
     type: 'enum',
     enum: AccountType,
     default: AccountType.MEMBER,
   })
-  account_type: AccountType;
+  accountType: AccountType;
 
   @Column({
     type: 'enum',
     enum: AccountStatus,
     default: AccountStatus.PENDING,
   })
-  account_status: AccountStatus;
+  accountStatus: AccountStatus;
 
   @Column({ type: 'text', nullable: true })
-  profile_picture: string;
+  profilePicture: string;
 
   @ManyToOne(() => Role, (role) => role.users, {
     onDelete: 'CASCADE',
-    nullable: true
+    nullable: true,
   })
   @JoinColumn({ name: 'role_id' })
   role: Role;
