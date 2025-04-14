@@ -53,6 +53,7 @@ export class User extends BaseEntity {
 
   @ManyToOne(() => Role, (role) => role.users, {
     onDelete: 'CASCADE',
+    nullable: true
   })
   @JoinColumn({ name: 'role_id' })
   role: Role;

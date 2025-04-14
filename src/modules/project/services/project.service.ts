@@ -16,6 +16,7 @@ import { WorkingUnitService } from '../../working-unit/services/working-unit.ser
 import { ClientService } from '../../client/services/client.service';
 import { UserService } from '../../user/services/user.service';
 import { AddProjectMemberDto } from '../dtos/add-project-member.dto';
+import { RemoveProjectMemberDto } from '../dtos/remove-project-member.dto';
 @Injectable()
 export class ProjectService {
   constructor(
@@ -50,7 +51,6 @@ export class ProjectService {
       if (error.code === '23505') {
         throw new ConflictException('Project name already exists');
       } else {
-        console.log(error);
         throw new BadRequestException();
       }
     }
@@ -101,6 +101,24 @@ export class ProjectService {
     }
     // Add the member
     project.members = [...project.members, user];
+    return await this.projectRepository.save(project);
+  }
+
+  async removeMember(
+    removeProjectMemberDto: RemoveProjectMemberDto,
+  ): Promise<Project> {
+    const { projectId, userId } = removeProjectMemberDto;
+    const project = await this.getById(projectId);
+    const user = await this.userService.getById(userId);
+
+    // Check if user is a member of the project
+    const isMember = project.members.some((member) => member.id === user.id);
+    if (!isMember) {
+      throw new BadRequestException('User is not a member of this project');
+    }
+
+    // Remove the member
+    project.members = project.members.filter((member) => member.id !== user.id);
     return await this.projectRepository.save(project);
   }
 }

@@ -25,11 +25,9 @@ export class ProjectMemberGuard implements CanActivate {
     const project = await this.projectService.getById(projectId);
 
     // Check if user is a member of the project
-    console.log(user);
     const isMember = project.members.some((member) => member.id === user.id);
 
     if (!isMember) {
-      console.log('came here');
       throw new ForbiddenException('User is not a member of this project');
     }
 

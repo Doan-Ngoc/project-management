@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Delete,
+} from '@nestjs/common';
 import { ProjectService } from './services/project.service';
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { Auth } from 'src/decorators/auth.decorator';
@@ -8,6 +16,7 @@ import { User } from '../user/entities/user.entity';
 import { Project } from './entities/project.entity';
 import { AddProjectMemberDto } from './dtos/add-project-member.dto';
 import { ProjectMemberGuard } from '@/guards/project-member.guard';
+import { RemoveProjectMemberDto } from './dtos/remove-project-member.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -29,5 +38,12 @@ export class ProjectController {
   @Auth(Permissions.ADD_PROJECT_MEMBERS)
   addMember(@Body() addProjectMemberDto: AddProjectMemberDto) {
     return this.projectService.addMember(addProjectMemberDto);
+  }
+
+  @Delete('/members')
+  @UseGuards(ProjectMemberGuard)
+  @Auth(Permissions.REMOVE_PROJECT_MEMBERS)
+  removeMember(@Body() removeProjectMemberDto: RemoveProjectMemberDto) {
+    return this.projectService.removeMember(removeProjectMemberDto);
   }
 }
