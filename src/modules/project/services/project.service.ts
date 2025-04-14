@@ -29,7 +29,7 @@ export class ProjectService {
   async create(createProjectDto: CreateProjectDto, userId: string) {
     const { workingUnitId, clientId, dueDate, ...projectData } =
       createProjectDto;
-    if (new Date(dueDate) < new Date()) {
+    if (dueDate && new Date(dueDate) < new Date()) {
       throw new BadRequestException('Due date cannot be in the past');
     }
     const workingUnit = await this.workingUnitService.getById(workingUnitId);

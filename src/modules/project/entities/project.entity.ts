@@ -23,7 +23,7 @@ export class Project extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ type: 'date', name: 'due_date' })
+  @Column({ type: 'date', name: 'due_date', nullable: true })
   dueDate: Date;
 
   @Column({

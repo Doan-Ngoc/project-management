@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
-import { JwtService } from '../modules/jwt/jwt.service';
+import { JwtService } from '../modules/jwt/services/jwt.service';
 import { Reflector } from '@nestjs/core';
 import { PERMISSIONS_KEY } from 'src/decorators/require-permission.decorator';
 import { PermissionService } from 'src/modules/permission/services/permission.service';
@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
     private configService: ConfigService,
     private reflector: Reflector,
     private permissionService: PermissionService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -37,12 +37,11 @@ export class AuthGuard implements CanActivate {
       token,
       this.configService.get('JWT_ACCESS_KEY') as string,
     );
-    const user = await this.userService.getById(decode.id)
+    const user = await this.userService.getById(decode.id);
 
     request.user = user;
 
-    if(user.account_status !== AccountStatus.ACTIVE)
-      return false;
+    if (user.account_status !== AccountStatus.ACTIVE) return false;
 
     //Bypass authorization check for admin
     if (user.account_type === AccountType.ADMIN) {

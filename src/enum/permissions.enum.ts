@@ -4,4 +4,5 @@ export enum Permissions {
   CREATE_PROJECT = 'create_project',
   ADD_PROJECT_MEMBERS = 'add_project_members',
   REMOVE_PROJECT_MEMBERS = 'remove_project_members',
+  CREATE_TASK = 'create_task',
 }

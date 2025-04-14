@@ -4,6 +4,7 @@ import {
   IsDateString,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateProjectDto {
@@ -12,7 +13,8 @@ export class CreateProjectDto {
   name: string;
 
   @IsString()
-  description: string;
+  @IsOptional()
+  description?: string;
 
   @IsUUID()
   workingUnitId: string;
@@ -21,11 +23,14 @@ export class CreateProjectDto {
   clientId: string;
 
   @IsDateString()
-  dueDate: string;
+  @IsOptional()
+  dueDate?: string;
 
   @IsNumber()
-  pmNumber: number;
+  @IsOptional()
+  pmNumber?: number;
 
   @IsNumber()
-  devNumber: number;
+  @IsOptional()
+  devNumber?: number;
 }
