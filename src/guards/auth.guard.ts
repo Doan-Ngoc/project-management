@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate {
     const userRoleId = decode.roleId;
 
     if (!allowedRoleIds.includes(userRoleId)) {
-      return false;
+      throw new ForbiddenException();
     }
 
     return true;

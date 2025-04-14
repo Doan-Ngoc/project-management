@@ -3,6 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  BadRequestException,
 } from '@nestjs/common';
 import { ProjectService } from '../modules/project/services/project.service';
 
@@ -17,16 +18,18 @@ export class ProjectMemberGuard implements CanActivate {
     // Get projectId from either params or body
     const projectId = request.params.projectId || request.body.projectId;
     if (!projectId) {
-      throw new ForbiddenException('Project ID not found in request');
+      throw new BadRequestException('Project ID is missing from request');
     }
 
     // Get project with its members
     const project = await this.projectService.getById(projectId);
 
     // Check if user is a member of the project
+    console.log(user);
     const isMember = project.members.some((member) => member.id === user.id);
 
     if (!isMember) {
+      console.log('came here');
       throw new ForbiddenException('User is not a member of this project');
     }
 

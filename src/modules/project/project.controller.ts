@@ -7,6 +7,7 @@ import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from '../user/entities/user.entity';
 import { Project } from './entities/project.entity';
 import { AddProjectMemberDto } from './dtos/add-project-member.dto';
+import { ProjectMemberGuard } from '@/guards/project-member.guard';
 
 @Controller('project')
 export class ProjectController {
@@ -24,6 +25,7 @@ export class ProjectController {
   }
 
   @Post('/members')
+  @UseGuards(ProjectMemberGuard)
   @Auth(Permissions.ADD_PROJECT_MEMBERS)
   addMember(@Body() addProjectMemberDto: AddProjectMemberDto) {
     return this.projectService.addMember(addProjectMemberDto);
