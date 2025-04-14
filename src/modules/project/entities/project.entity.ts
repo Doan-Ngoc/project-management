@@ -23,8 +23,8 @@ export class Project extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ type: 'date' })
-  due_date: Date;
+  @Column({ type: 'date', name: 'due_date' })
+  dueDate: Date;
 
   @Column({
     type: 'enum',
@@ -33,11 +33,11 @@ export class Project extends BaseEntity {
   })
   status: ProjectStatus;
 
-  @Column({ type: 'integer', nullable: true })
-  pm_number: number;
+  @Column({ type: 'integer', nullable: true, name: 'pm_number' })
+  pmNumber: number;
 
-  @Column({ type: 'integer', nullable: true })
-  dev_number: number;
+  @Column({ type: 'integer', nullable: true, name: 'dev_number' })
+  devNumber: number;
 
   @ManyToOne(() => WorkingUnit, (unit) => unit.projects)
   @JoinColumn({ name: 'working_unit_id' })
@@ -51,7 +51,7 @@ export class Project extends BaseEntity {
   @JoinColumn({ name: 'created_by' })
   createdBy: User;
 
-  @ManyToMany(() => User, (user) => user.projects)
+  @ManyToMany(() => User, (user) => user.projects, { cascade: true })
   @JoinTable({
     name: 'project_member',
     joinColumn: {
@@ -65,6 +65,6 @@ export class Project extends BaseEntity {
   })
   members: User[];
 
-  @OneToMany(() => Task, (task) => task.project)
+  @OneToMany(() => Task, (task) => task.project, { cascade: true })
   tasks: Task[];
 }

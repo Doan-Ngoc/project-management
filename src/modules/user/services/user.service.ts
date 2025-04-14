@@ -8,7 +8,7 @@ import {
   NotFoundException,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from '..';
+import { CreateUserDto } from '../dtos';
 import { User } from '../entities/user.entity';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { UserRepository } from '../repositories/user.repository';
@@ -44,7 +44,6 @@ export class UserService {
       account_status: AccountStatus.PENDING,
       account_type: AccountType.MEMBER,
     };
-    console.log(userData);
 
     try {
       const newUser = this.userRepository.create(userData);
@@ -61,6 +60,7 @@ export class UserService {
   async getById(id: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
+      relations: ['role', 'workingUnit'],
     });
 
     if (!user) {

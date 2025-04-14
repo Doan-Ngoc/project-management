@@ -34,6 +34,7 @@ export class AuthGuard implements CanActivate {
       token,
       this.configService.get('JWT_ACCESS_KEY') as string,
     );
+    request.user = decode;
 
     //Bypass authorization check for admin
     if (decode.accountType === AccountType.ADMIN) {

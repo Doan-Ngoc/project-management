@@ -1,7 +1,7 @@
 import {
   IsUUID,
   IsString,
-  IsDate,
+  IsDateString,
   IsNotEmpty,
   IsNumber,
 } from 'class-validator';
@@ -20,11 +20,8 @@ export class CreateProjectDto {
   @IsUUID()
   clientId: string;
 
-  @IsDate()
-  startFrom: Date;
-
-  @IsDate()
-  dueDate: Date;
+  @IsDateString()
+  dueDate: string;
 
   @IsNumber()
   pmNumber: number;
