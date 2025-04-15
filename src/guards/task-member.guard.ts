@@ -19,7 +19,6 @@ export class TaskMemberGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log('TaskMemberGuard');
     const request = context.switchToHttp().getRequest();
     // Get projectId from either params or body
     let taskId = request.params?.taskId || request.body?.taskId;

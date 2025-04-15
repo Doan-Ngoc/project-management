@@ -101,4 +101,16 @@ export class UserService {
     }
     return user;
   }
+
+  async updateAccountStatus(
+    status: AccountStatus,
+    userId: string,
+  ): Promise<void> {
+    const result = await this.userRepository.update(userId, {
+      accountStatus: status,
+    });
+    if (result.affected === 0) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+  }
 }

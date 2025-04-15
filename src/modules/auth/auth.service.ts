@@ -7,8 +7,9 @@ import {
 import * as bcrypt from 'bcrypt';
 import { AuthLogInDto } from './dto/authLogIn.dto';
 import { UserService } from '../user/services/user.service';
-import { JwtService } from '@/modules/jwt/services/jwt.service';
+import { JwtService } from '../jwt/services/jwt.service';
 import { ConfigService } from '@nestjs/config';
+import { AccountStatus } from '../../enum/account-status.enum';
 
 @Injectable()
 export class AuthService {
@@ -50,5 +51,16 @@ export class AuthService {
         },
       ),
     };
+  }
+
+  async verifyEmail(token: string) {
+    const decoded = this.jwtService.verify(
+      token,
+      this.configService.get('JWT_VERIFICATION_KEY') as string,
+    );
+    await this.userService.updateAccountStatus(
+      AccountStatus.ACTIVE,
+      decoded.id,
+    );
   }
 }
