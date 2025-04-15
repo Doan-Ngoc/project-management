@@ -18,6 +18,9 @@ import { RoleService } from '../../role/services/role.service';
 import { WorkingUnitService } from '../../working-unit/services/working-unit.service';
 import { Auth } from '@/decorators/auth.decorator';
 import { CreateUserDto } from '../dtos';
+import { MailService } from '../../mail/services/mail.service';
+import { JwtService } from '../../jwt/services/jwt.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -27,6 +30,9 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly roleService: RoleService,
     private readonly workingUnitService: WorkingUnitService,
+    private readonly mailService: MailService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -48,14 +54,28 @@ export class UserService {
 
     try {
       const newUser = this.userRepository.create(userData);
-      const saveUser = await this.userRepository.save(newUser);
-      return User.plainToClass(saveUser);
+      const savedUser = await this.userRepository.save(newUser);
+
+      // Generate verification token
+      const verificationToken = this.jwtService.sign(
+        { id: savedUser.id },
+        this.configService.get('JWT_VERIFICATION_KEY') as string,
+        { expiresIn: '24h' },
+      );
+
+      // Send verification email
+      await this.mailService.sendVerificationEmail(
+        savedUser.email,
+        verificationToken,
+      );
+
+      return User.plainToClass(savedUser);
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Email already exists');
       }
+      throw new BadRequestException();
     }
-    throw new BadRequestException();
   }
 
   async getById(id: string): Promise<User> {

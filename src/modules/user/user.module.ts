@@ -10,6 +10,8 @@ import { WorkingUnitModule } from '../working-unit/working-unit.module';
 import { CreateUserDto } from './dtos';
 import { JwtModule } from '../jwt/jwt.module';
 import { PermissionModule } from '../permission/permission.module';
+import { MailModule } from '../mail/mail.module';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -18,6 +20,7 @@ import { PermissionModule } from '../permission/permission.module';
     WorkingUnitModule,
     JwtModule,
     PermissionModule,
+    MailModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository],
