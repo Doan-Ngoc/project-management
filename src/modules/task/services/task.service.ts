@@ -26,6 +26,9 @@ import {
   DeleteTaskDto,
   UpdateTaskStatusDto,
 } from '../dto';
+import { paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { Project } from '@/modules/project/entities/project.entity';
 
 @Injectable()
 export class TaskService {
@@ -48,6 +51,25 @@ export class TaskService {
     }
 
     return task;
+  }
+
+  //Get all tasks of a project
+  async getAllTasks(
+    projectId: string,
+    options: IPaginationOptions,
+    query?: string,
+  ): Promise<Pagination<Task>> {
+    const project = await this.projectService.getById(projectId);
+    const queryBuilder = this.taskRepository.createQueryBuilder('task');
+    queryBuilder.where('task.project_id = :projectId', { projectId });
+    if (query) {
+      queryBuilder.andWhere('LOWER(task.name) LIKE :query', {
+        query: `%${query.toLowerCase()}%`,
+      });
+    }
+    queryBuilder.orderBy('task.createdAt', 'DESC');
+
+    return paginate<Task>(queryBuilder, options);
   }
 
   async createTask(

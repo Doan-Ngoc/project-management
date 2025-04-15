@@ -7,6 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  DefaultValuePipe,
+  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { TaskService } from './services/task.service';
 // import { CreateTaskDto } from './dto/create-task.dto';
@@ -29,6 +32,9 @@ import {
   DeleteTaskDto,
   UpdateTaskStatusDto,
 } from './dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { Project } from '../project/entities/project.entity';
 
 @Controller('tasks')
 export class TaskController {
@@ -42,11 +48,31 @@ export class TaskController {
     return this.taskService.createTask(createTaskDto, user.id);
   }
 
+  //Get task by id
   @Get(':taskId')
   @UseGuards(ProjectMemberGuard)
   @Auth(Permissions.GET_TASK_BY_ID)
   getTaskById(@Param('taskId') id: string): Promise<Task> {
     return this.taskService.getById(id);
+  }
+
+  //Get all tasks of a project
+  @Get('/project/:projectId')
+  @UseGuards(ProjectMemberGuard)
+  @Auth(Permissions.GET_ALL_TASKS)
+  async getAllTasks(
+    @Param('projectId') projectId: string,
+    @Query('search') query: string,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number,
+  ): Promise<Pagination<Task>> {
+    limit = limit > 10 ? 10 : limit;
+    const options: IPaginationOptions = {
+      page,
+      limit,
+      route: `/tasks/project/${projectId}`,
+    };
+    return this.taskService.getAllTasks(projectId, options, query);
   }
 
   //Add member to task
