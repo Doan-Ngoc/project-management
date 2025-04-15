@@ -9,6 +9,9 @@ import { CreateTaskDto } from '../dto/create-task.dto';
 import { Task } from '../entities/task.entity';
 import { ProjectService } from '../../project/services/project.service';
 import { UserService } from '../../user/services/user.service';
+import { Cron } from '@nestjs/schedule';
+import { CronExpression } from '@nestjs/schedule';
+import { TaskStatus } from '@/enum/task-status.enum';
 
 @Injectable()
 export class TaskService {
@@ -36,30 +39,32 @@ export class TaskService {
       project,
       createdBy: user,
     });
-    // const task = new Task();
-    // task.name = name;
-    // task.description = description || '';
-    // task.dueDate = dueDate ? new Date(dueDate) : new Date();
-    // task.project = project;
-    // task.createdBy = user;
-    // task.status = TaskStatus.IN_PROGRESS;
 
     return await this.taskRepository.save(newTask);
   }
 
-  // findAll() {
-  //   return `This action returns all task`;
-  // }
+  //Every midnight: Update task status to expired if due date is passed
+  @Cron(CronExpression.EVERY_MINUTE, {
+    // timeZone: 'Asia/Ho_Chi_Minh',
+  })
+  async handleExpiredTasks() {
+    try {
+      console.log('Cron started');
+      const now = new Date();
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} task`;
-  // }
+      const result = await this.taskRepository
+        .createQueryBuilder()
+        .update(Task)
+        .set({ status: TaskStatus.EXPIRED })
+        .where('dueDate < :now', { now })
+        .andWhere(`status = :status`, {
+          status: TaskStatus.IN_PROGRESS,
+        })
+        .execute();
 
-  // update(id: number, updateTaskDto: UpdateTaskDto) {
-  //   return `This action updates a #${id} task`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} task`;
-  // }
+      console.log(`${result.affected} task(s) marked as expired.`);
+    } catch (err) {
+      console.error('Cron job error:', err);
+    }
+  }
 }

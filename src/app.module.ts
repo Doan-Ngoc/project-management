@@ -12,6 +12,7 @@ import { ClientModule } from './modules/client/client.module';
 import { ProjectModule } from './modules/project/project.module';
 import { TaskModule } from './modules/task/task.module';
 import typeorm from './databases/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -36,6 +37,7 @@ import typeorm from './databases/typeorm';
     ClientModule,
     ProjectModule,
     TaskModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
