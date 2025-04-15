@@ -18,6 +18,7 @@ import { AddTaskMemberDto } from '../dto/add-task-member.dto';
 import { AccountStatus } from '@/enum/account-status.enum';
 import { RemoveTaskMemberDto } from '../dto/remove-task-member.dto';
 import { DeleteTaskDto } from '../dto/delete-task.dto';
+import { UpdateTaskStatusDto } from '../dto/update-task-status.dto';
 @Injectable()
 export class TaskService {
   constructor(
@@ -166,6 +167,22 @@ export class TaskService {
     return await this.taskRepository.save(task);
   }
 
+  //Update task status
+  async updateStatus(
+    taskId: string,
+    updateTaskStatusDto: UpdateTaskStatusDto,
+    userId: string,
+  ): Promise<Task> {
+    const { newStatus } = updateTaskStatusDto;
+    const task = await this.getById(taskId);
+    const user = await this.userService.getById(userId);
+
+    task.status = newStatus;
+    task.updatedBy = user;
+
+    return await this.taskRepository.save(task);
+  }
+
   //Delete task
   async deleteTask(
     taskId: string,
@@ -175,10 +192,6 @@ export class TaskService {
     const { deletedReason } = deleteTaskDto;
     // Get task with its project and members
     const task = await this.getById(taskId);
-
-    if (!task) {
-      throw new NotFoundException(`Task with ID ${taskId} not found`);
-    }
 
     // Get the user who is deleting
     const user = await this.userService.getById(userId);

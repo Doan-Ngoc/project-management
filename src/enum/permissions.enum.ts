@@ -10,5 +10,6 @@ export enum Permissions {
   GET_TASK_BY_ID = 'get_task_by_id',
   ADD_TASK_MEMBERS = 'add_task_members',
   REMOVE_TASK_MEMBERS = 'remove_task_members',
+  UPDATE_TASK_STATUS = 'update_task_status',
   DELETE_TASK = 'delete_task',
 }
