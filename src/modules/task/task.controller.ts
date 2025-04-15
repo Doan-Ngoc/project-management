@@ -18,6 +18,7 @@ import { User } from '../user/entities/user.entity';
 import { ProjectMemberGuard } from '@/guards/project-member.guard';
 import { AddTaskMemberDto } from './dto/add-task-member.dto';
 import { RemoveTaskMemberDto } from './dto/remove-task-member.dto';
+import { Task } from './entities/task.entity';
 @Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
@@ -28,6 +29,13 @@ export class TaskController {
   @Auth(Permissions.CREATE_TASK)
   create(@Body() createTaskDto: CreateTaskDto, @GetUser() user: User) {
     return this.taskService.create(createTaskDto, user.id);
+  }
+
+  @Get(':taskId')
+  @UseGuards(ProjectMemberGuard)
+  @Auth(Permissions.GET_TASK_BY_ID)
+  getTaskById(@Param('taskId') id: string): Promise<Task> {
+    return this.taskService.getById(id);
   }
 
   //Add member to task
@@ -44,24 +52,4 @@ export class TaskController {
   removeMember(@Body() removeTaskMemberDto: RemoveTaskMemberDto) {
     return this.taskService.removeMember(removeTaskMemberDto);
   }
-
-  // @Get()
-  // findAll() {
-  //   return this.taskService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.taskService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-  //   return this.taskService.update(+id, updateTaskDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.taskService.remove(+id);
-  // }
 }

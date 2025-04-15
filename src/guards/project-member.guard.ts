@@ -20,21 +20,22 @@ export class ProjectMemberGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    console.log(request.body);
     // Get projectId from either params or body
     let projectId = request.params?.projectId || request.body?.projectId;
 
-    // If no direct projectId but has taskId, get project from task
-    if (!projectId && request.body.taskId) {
-      const task = await this.taskService.getById(request.body.taskId);
+    // For requests that only send taskId, get project from task
+    if (!projectId) {
+      const taskId = request.params?.taskId || request.body?.taskId;
+      if (!taskId) throw new BadRequestException();
+      const task = await this.taskService.getById(taskId);
       if (!task) {
         throw new NotFoundException('Task not found');
       }
+      if (!task.project?.id)
+        throw new BadRequestException(
+          'Task is not associated with any project',
+        );
       projectId = task.project.id;
-    }
-
-    if (!projectId) {
-      throw new BadRequestException('Project ID is missing from request');
     }
 
     const user = request.user;

@@ -68,7 +68,6 @@ export class TaskService {
   })
   async handleExpiredTasks() {
     try {
-      console.log('Cron started');
       const now = new Date();
 
       const result = await this.taskRepository

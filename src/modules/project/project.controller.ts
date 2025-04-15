@@ -48,8 +48,10 @@ export class ProjectController {
     return this.projectService.create(createProjectDto, user.id);
   }
 
-  @Get(':id')
-  getProjectById(@Param('id') id: string): Promise<Project> {
+  @Get(':projectId')
+  @UseGuards(ProjectMemberGuard)
+  @Auth(Permissions.GET_PROJECT_BY_ID)
+  getProjectById(@Param('projectId') id: string): Promise<Project> {
     return this.projectService.getById(id);
   }
 
