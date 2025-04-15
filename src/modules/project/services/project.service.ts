@@ -20,6 +20,8 @@ import { RemoveProjectMemberDto } from '../dtos/remove-project-member.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { paginate } from 'nestjs-typeorm-paginate';
+import { AccountStatus } from '@/enum/account-status.enum';
+import { AccountType } from '@/enum/account-type.enum';
 @Injectable()
 export class ProjectService {
   constructor(
@@ -62,6 +64,13 @@ export class ProjectService {
     const workingUnit = await this.workingUnitService.getById(workingUnitId);
     const client = await this.clientService.getById(clientId);
     const user = await this.userService.getById(userId);
+    if (user.accountType !== AccountType.ADMIN) {
+      if (user.workingUnit.id !== workingUnitId) {
+        throw new BadRequestException(
+          'PM can only create projects for their own working unit',
+        );
+      }
+    }
     try {
       const project = this.projectRepository.create({
         ...projectData,
@@ -100,10 +109,15 @@ export class ProjectService {
     const { projectId, userId } = addProjectMemberDto;
     const project = await this.getById(projectId);
     const user = await this.userService.getById(userId);
+    //Check if user account is active
+    if (user.accountStatus !== AccountStatus.ACTIVE) {
+      throw new BadRequestException('User account is not active');
+    }
     // Check if user is already a member
     if (project.members.some((member) => member.id === user.id)) {
       throw new BadRequestException('User is already a member of this project');
     }
+    // Check if user is a member of the working unit
     if (user.workingUnit.id !== project.workingUnit.id) {
       throw new BadRequestException(
         'User is not a member of this working unit',

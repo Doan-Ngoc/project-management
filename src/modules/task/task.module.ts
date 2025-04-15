@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskService } from './services/task.service';
 import { TaskController } from './task.controller';
@@ -10,7 +10,7 @@ import { PermissionModule } from '../permission/permission.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Task]),
-    ProjectModule,
+    forwardRef(() => ProjectModule),
     UserModule,
     JwtModule,
     PermissionModule,

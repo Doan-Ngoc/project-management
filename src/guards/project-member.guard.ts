@@ -5,20 +5,34 @@ import {
   ForbiddenException,
   BadRequestException,
   UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ProjectService } from '../modules/project/services/project.service';
 import { AccountStatus } from '@/enum/account-status.enum';
 import { AccountType } from '@/enum/account-type.enum';
-
+import { TaskService } from '@/modules/task/services/task.service';
 @Injectable()
 export class ProjectMemberGuard implements CanActivate {
-  constructor(private projectService: ProjectService) {}
+  constructor(
+    private projectService: ProjectService,
+    private taskService: TaskService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-
+    console.log(request.body);
     // Get projectId from either params or body
-    const projectId = request.params.projectId || request.body.projectId;
+    let projectId = request.params?.projectId || request.body?.projectId;
+
+    // If no direct projectId but has taskId, get project from task
+    if (!projectId && request.body.taskId) {
+      const task = await this.taskService.getById(request.body.taskId);
+      if (!task) {
+        throw new NotFoundException('Task not found');
+      }
+      projectId = task.project.id;
+    }
+
     if (!projectId) {
       throw new BadRequestException('Project ID is missing from request');
     }

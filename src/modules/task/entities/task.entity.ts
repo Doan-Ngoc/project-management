@@ -45,7 +45,17 @@ export class Task extends BaseEntity {
   project: Project;
 
   @ManyToMany(() => User, (user) => user.tasks)
-  @JoinTable({ name: 'task_member' })
+  @JoinTable({
+    name: 'task_member',
+    joinColumn: {
+      name: 'task_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+  })
   members: User[];
 
   @ManyToOne(() => User)
