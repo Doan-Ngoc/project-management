@@ -177,6 +177,12 @@ export class TaskService {
     const task = await this.getById(taskId);
     const user = await this.userService.getById(userId);
 
+    if (newStatus === task.status) {
+      throw new BadRequestException(
+        'New status is the same as the current status',
+      );
+    }
+
     task.status = newStatus;
     task.updatedBy = user;
 

@@ -21,6 +21,7 @@ import { RemoveTaskMemberDto } from './dto/remove-task-member.dto';
 import { Task } from './entities/task.entity';
 import { DeleteTaskDto } from './dto/delete-task.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { TaskMemberGuard } from '@/guards/task-member.guard';
 @Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
@@ -42,20 +43,21 @@ export class TaskController {
 
   //Add member to task
   @Post('/members')
-  @UseGuards(ProjectMemberGuard)
+  @UseGuards(TaskMemberGuard)
   @Auth(Permissions.ADD_TASK_MEMBERS)
   addMember(@Body() addTaskMemberDto: AddTaskMemberDto) {
     return this.taskService.addMember(addTaskMemberDto);
   }
 
   @Delete('/members')
-  @UseGuards(ProjectMemberGuard)
+  @UseGuards(TaskMemberGuard)
   @Auth(Permissions.REMOVE_TASK_MEMBERS)
   removeMember(@Body() removeTaskMemberDto: RemoveTaskMemberDto) {
     return this.taskService.removeMember(removeTaskMemberDto);
   }
 
   @Patch(':taskId/status')
+  @UseGuards(TaskMemberGuard)
   @Auth(Permissions.UPDATE_TASK_STATUS)
   updateStatus(
     @Param('taskId') taskId: string,
@@ -66,7 +68,7 @@ export class TaskController {
   }
 
   @Delete(':taskId')
-  @UseGuards(ProjectMemberGuard)
+  @UseGuards(TaskMemberGuard)
   @Auth(Permissions.DELETE_TASK)
   async deleteTask(
     @Param('taskId') taskId: string,
