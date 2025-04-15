@@ -24,6 +24,7 @@ import {
   AddTaskMemberDto,
   RemoveTaskMemberDto,
   DeleteTaskDto,
+  UpdateTaskDto,
   UpdateTaskStatusDto,
 } from '../dto';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
@@ -214,6 +215,45 @@ export class TaskService {
     }
 
     task.status = newStatus;
+    task.updatedBy = user;
+
+    return await this.taskRepository.save(task);
+  }
+
+  //Update task
+  async updateTask(
+    taskId: string,
+    updateTaskDto: UpdateTaskDto,
+    userId: string,
+  ): Promise<Task> {
+    const task = await this.getById(taskId);
+    if (
+      task.status === TaskStatus.COMPLETED ||
+      task.status === TaskStatus.CANCELLED
+    ) {
+      throw new BadRequestException(`Cannot update a ${task.status} task`);
+    }
+    // Validate due date if provided
+    if (updateTaskDto.dueDate && new Date(updateTaskDto.dueDate) < new Date()) {
+      throw new BadRequestException('Due date cannot be in the past');
+    }
+
+    // Get the user who is updating
+    const user = await this.userService.getById(userId);
+
+    // Update the fields
+    if (updateTaskDto.name) {
+      task.name = updateTaskDto.name;
+    }
+    //Allow empty string for description
+    if (updateTaskDto.description !== undefined) {
+      task.description = updateTaskDto.description;
+    }
+    if (updateTaskDto.dueDate) {
+      task.dueDate = new Date(updateTaskDto.dueDate);
+    }
+
+    // Set who updated it
     task.updatedBy = user;
 
     return await this.taskRepository.save(task);

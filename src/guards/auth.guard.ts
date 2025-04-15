@@ -55,9 +55,11 @@ export class AuthGuard implements CanActivate {
     if (!requiredPermission) {
       return true;
     }
+
     const allowedRoleIds =
       await this.permissionService.getPermissionRoles(requiredPermission);
     const userRoleId = user.role.id;
+    console.log('AuthGuard', allowedRoleIds, userRoleId);
     if (!allowedRoleIds.includes(userRoleId)) {
       throw new ForbiddenException();
     }

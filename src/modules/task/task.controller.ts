@@ -31,6 +31,7 @@ import {
   RemoveTaskMemberDto,
   DeleteTaskDto,
   UpdateTaskStatusDto,
+  UpdateTaskDto,
 } from './dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
@@ -99,6 +100,17 @@ export class TaskController {
     @GetUser() user: User,
   ) {
     return this.taskService.updateStatus(taskId, updateStatusDto, user.id);
+  }
+
+  @Patch(':taskId')
+  @UseGuards(TaskMemberGuard)
+  @Auth(Permissions.UPDATE_TASK)
+  async updateTask(
+    @Param('taskId') taskId: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+    @GetUser() user: User,
+  ): Promise<Task> {
+    return this.taskService.updateTask(taskId, updateTaskDto, user.id);
   }
 
   @Delete(':taskId')
