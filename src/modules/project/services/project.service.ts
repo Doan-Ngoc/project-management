@@ -9,19 +9,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectStatus } from '@/enum/project-status.enum';
 import { Project } from '../entities/project.entity';
-import { CreateProjectDto } from '../dtos/create-project.dto';
+// import { CreateProjectDto } from '../dtos/create-project.dto';
 import { User } from '../../user/entities/user.entity';
 import { UserService } from '../../user/services/user.service';
 import { ProjectRepository } from '../repositories/project.repository';
 import { WorkingUnitService } from '../../working-unit/services/working-unit.service';
 import { ClientService } from '../../client/services/client.service';
-import { AddProjectMemberDto } from '../dtos/add-project-member.dto';
-import { RemoveProjectMemberDto } from '../dtos/remove-project-member.dto';
+// import { AddProjectMemberDto } from '../dtos/add-project-member.dto';
+// import { RemoveProjectMemberDto } from '../dtos/remove-project-member.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { AccountStatus } from '@/enum/account-status.enum';
 import { AccountType } from '@/enum/account-type.enum';
+import {
+  CreateProjectDto,
+  AddProjectMemberDto,
+  RemoveProjectMemberDto,
+} from '../dtos';
 @Injectable()
 export class ProjectService {
   constructor(

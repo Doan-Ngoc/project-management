@@ -7,18 +7,26 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateTaskDto } from '../dto/create-task.dto';
+// import { CreateTaskDto } from '../dto/create-task.dto';
 import { Task } from '../entities/task.entity';
 import { ProjectService } from '../../project/services/project.service';
 import { UserService } from '../../user/services/user.service';
 import { Cron } from '@nestjs/schedule';
 import { CronExpression } from '@nestjs/schedule';
 import { TaskStatus } from '@/enum/task-status.enum';
-import { AddTaskMemberDto } from '../dto/add-task-member.dto';
+// import { AddTaskMemberDto } from '../dto/add-task-member.dto';
 import { AccountStatus } from '@/enum/account-status.enum';
-import { RemoveTaskMemberDto } from '../dto/remove-task-member.dto';
-import { DeleteTaskDto } from '../dto/delete-task.dto';
-import { UpdateTaskStatusDto } from '../dto/update-task-status.dto';
+// import { RemoveTaskMemberDto } from '../dto/remove-task-member.dto';
+// import { DeleteTaskDto } from '../dto/delete-task.dto';
+// import { UpdateTaskStatusDto } from '../dto/update-task-status.dto';
+import {
+  CreateTaskDto,
+  AddTaskMemberDto,
+  RemoveTaskMemberDto,
+  DeleteTaskDto,
+  UpdateTaskStatusDto,
+} from '../dto';
+
 @Injectable()
 export class TaskService {
   constructor(

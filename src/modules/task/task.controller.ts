@@ -9,19 +9,27 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TaskService } from './services/task.service';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
+// import { CreateTaskDto } from './dto/create-task.dto';
+// import { UpdateTaskDto } from './dto/update-task.dto';
 import { Auth } from 'src/decorators/auth.decorator';
 import { Permissions } from 'src/enum/permissions.enum';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from '../user/entities/user.entity';
 import { ProjectMemberGuard } from '@/guards/project-member.guard';
-import { AddTaskMemberDto } from './dto/add-task-member.dto';
-import { RemoveTaskMemberDto } from './dto/remove-task-member.dto';
+// import { AddTaskMemberDto } from './dto/add-task-member.dto';
+// import { RemoveTaskMemberDto } from './dto/remove-task-member.dto';
 import { Task } from './entities/task.entity';
-import { DeleteTaskDto } from './dto/delete-task.dto';
-import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+// import { DeleteTaskDto } from './dto/delete-task.dto';
+// import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TaskMemberGuard } from '@/guards/task-member.guard';
+import {
+  CreateTaskDto,
+  AddTaskMemberDto,
+  RemoveTaskMemberDto,
+  DeleteTaskDto,
+  UpdateTaskStatusDto,
+} from './dto';
+
 @Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}

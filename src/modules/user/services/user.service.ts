@@ -8,7 +8,7 @@ import {
   NotFoundException,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from '../dtos';
+// import { CreateUserDto } from '../dtos';
 import { User } from '../entities/user.entity';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { UserRepository } from '../repositories/user.repository';
@@ -17,6 +17,7 @@ import { AccountType } from 'src/enum/account-type.enum';
 import { RoleService } from '../../role/services/role.service';
 import { WorkingUnitService } from '../../working-unit/services/working-unit.service';
 import { Auth } from '@/decorators/auth.decorator';
+import { CreateUserDto } from '../dtos';
 
 @Injectable()
 export class UserService {
