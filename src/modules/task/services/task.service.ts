@@ -6,7 +6,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateTaskDto } from '../dto/create-task.dto';
 import { Task } from '../entities/task.entity';
 import { ProjectService } from '../../project/services/project.service';
@@ -17,7 +17,7 @@ import { TaskStatus } from '@/enum/task-status.enum';
 import { AddTaskMemberDto } from '../dto/add-task-member.dto';
 import { AccountStatus } from '@/enum/account-status.enum';
 import { RemoveTaskMemberDto } from '../dto/remove-task-member.dto';
-
+import { DeleteTaskDto } from '../dto/delete-task.dto';
 @Injectable()
 export class TaskService {
   constructor(
@@ -41,7 +41,10 @@ export class TaskService {
     return task;
   }
 
-  async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
+  async createTask(
+    createTaskDto: CreateTaskDto,
+    userId: string,
+  ): Promise<Task> {
     const { projectId, dueDate, ...taskData } = createTaskDto;
     const project = await this.projectService.getById(projectId);
     const user = await this.userService.getById(userId);
@@ -161,5 +164,34 @@ export class TaskService {
     // Remove the member
     task.members = task.members.filter((member) => member.id !== user.id);
     return await this.taskRepository.save(task);
+  }
+
+  //Delete task
+  async deleteTask(
+    taskId: string,
+    deleteTaskDto: DeleteTaskDto,
+    userId: string,
+  ): Promise<Task> {
+    const { deletedReason } = deleteTaskDto;
+    // Get task with its project and members
+    const task = await this.getById(taskId);
+
+    if (!task) {
+      throw new NotFoundException(`Task with ID ${taskId} not found`);
+    }
+
+    // Get the user who is deleting
+    const user = await this.userService.getById(userId);
+
+    // Update task properties for soft delete
+    task.deletedBy = user;
+    task.deleted_reason = deletedReason;
+    if ((task.status = TaskStatus.PENDING || TaskStatus.IN_PROGRESS)) {
+      task.status = TaskStatus.CANCELLED;
+    }
+    await this.taskRepository.save(task);
+
+    // Soft delete using TypeORM
+    return await this.taskRepository.softRemove(task);
   }
 }

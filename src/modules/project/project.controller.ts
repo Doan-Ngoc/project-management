@@ -44,8 +44,11 @@ export class ProjectController {
 
   @Auth(Permissions.CREATE_PROJECT)
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto, @GetUser() user: User) {
-    return this.projectService.create(createProjectDto, user.id);
+  createProject(
+    @Body() createProjectDto: CreateProjectDto,
+    @GetUser() user: User,
+  ) {
+    return this.projectService.createProject(createProjectDto, user.id);
   }
 
   @Get(':projectId')

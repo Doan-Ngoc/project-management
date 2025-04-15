@@ -19,6 +19,7 @@ import { ProjectMemberGuard } from '@/guards/project-member.guard';
 import { AddTaskMemberDto } from './dto/add-task-member.dto';
 import { RemoveTaskMemberDto } from './dto/remove-task-member.dto';
 import { Task } from './entities/task.entity';
+import { DeleteTaskDto } from './dto/delete-task.dto';
 @Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
@@ -27,8 +28,8 @@ export class TaskController {
   @Post()
   @UseGuards(ProjectMemberGuard)
   @Auth(Permissions.CREATE_TASK)
-  create(@Body() createTaskDto: CreateTaskDto, @GetUser() user: User) {
-    return this.taskService.create(createTaskDto, user.id);
+  createTask(@Body() createTaskDto: CreateTaskDto, @GetUser() user: User) {
+    return this.taskService.createTask(createTaskDto, user.id);
   }
 
   @Get(':taskId')
@@ -51,5 +52,16 @@ export class TaskController {
   @Auth(Permissions.REMOVE_TASK_MEMBERS)
   removeMember(@Body() removeTaskMemberDto: RemoveTaskMemberDto) {
     return this.taskService.removeMember(removeTaskMemberDto);
+  }
+
+  @Delete(':taskId')
+  @UseGuards(ProjectMemberGuard)
+  @Auth(Permissions.DELETE_TASK)
+  async deleteTask(
+    @Param('taskId') taskId: string,
+    @Body() deleteTaskDto: DeleteTaskDto,
+    @GetUser() user: User,
+  ): Promise<Task> {
+    return this.taskService.deleteTask(taskId, deleteTaskDto, user.id);
   }
 }

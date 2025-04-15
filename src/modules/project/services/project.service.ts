@@ -55,7 +55,7 @@ export class ProjectService {
     return paginate<Project>(queryBuilder, options);
   }
 
-  async create(createProjectDto: CreateProjectDto, userId: string) {
+  async createProject(createProjectDto: CreateProjectDto, userId: string) {
     const { workingUnitId, clientId, dueDate, ...projectData } =
       createProjectDto;
     if (dueDate && new Date(dueDate) < new Date()) {
