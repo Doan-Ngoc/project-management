@@ -1,23 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
-
+import { JwtService } from '../../jwt/services/jwt.service';
 @Injectable()
 export class MailService {
-  constructor(
-    private readonly mailerService: MailerService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly mailerService: MailerService) {}
 
   async sendVerificationEmail(
     email: string,
     verificationToken: string,
   ): Promise<void> {
-    const verificationUrl = `${this.configService.get('FRONTEND_URL')}/verify-email?token=${verificationToken}`;
+    const verificationUrl = `http://localhost:3000/verify-email?token=${verificationToken}`;
 
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Verify your email address',
+      subject: 'Please verify your account',
       template: 'verify-email',
       context: {
         verificationUrl,

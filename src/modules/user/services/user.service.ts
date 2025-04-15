@@ -51,16 +51,15 @@ export class UserService {
       accountStatus: AccountStatus.PENDING,
       accountType: AccountType.MEMBER,
     };
-
     try {
       const newUser = this.userRepository.create(userData);
       const savedUser = await this.userRepository.save(newUser);
-
+      console.log('came here');
       // Generate verification token
       const verificationToken = this.jwtService.sign(
         { id: savedUser.id },
         this.configService.get('JWT_VERIFICATION_KEY') as string,
-        { expiresIn: '24h' },
+        { expiresIn: this.configService.get('JWT_VERIFICATION_EXPIRE') },
       );
 
       // Send verification email
@@ -74,6 +73,7 @@ export class UserService {
       if (error.code === '23505') {
         throw new ConflictException('Email already exists');
       }
+      console.log(error);
       throw new BadRequestException();
     }
   }

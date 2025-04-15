@@ -4,21 +4,20 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailService } from './services/mail.service';
 import * as path from 'path';
+import { JwtModule } from '../jwt/jwt.module';
 
 @Module({
   imports: [
     MailerModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, JwtModule],
       useFactory: async (configService: ConfigService) => ({
         transport: {
-          // configService.get('MAIL_HOST')
-          //configService.get('MAIL_SECURE') === 'true'
-          host: 'smtp.gmail.com',
-          port: 587,
-          secure: false,
+          host: configService.get('MAIL_HOST'),
+          port: configService.get('MAIL_PORT'),
+          secure: configService.get('MAIL_SECURE') === 'true',
           auth: {
-            user: 'minhngocdoan3112@gmail.com',
-            pass: 'REDACTED',
+            user: configService.get('MAIL_USER'),
+            pass: configService.get('MAIL_PASS'),
           },
         },
         defaults: {
@@ -26,7 +25,8 @@ import * as path from 'path';
         },
         template: {
           // dir: __dirname + '/templates',
-          dir: path.join(process.cwd(), 'src/modules/mail/templates'),
+          dir: 'src/modules/mail/templates',
+          // dir: path.join(process.cwd(), 'src/modules/mail/templates'),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,

@@ -23,9 +23,9 @@ export class UserController {
     return 'abc';
   }
 
-  @Get('test-email')
-  async testEmail(@Query('email') email: string) {
-    await this.mailService.sendVerificationEmail(email, 'test-token-123');
-    return { message: 'Email sent successfully' };
-  }
+  // @Get('test-email')
+  // async testEmail(@Query('email') email: string) {
+  //   await this.mailService.sendVerificationEmail(email, 'test-token-123');
+  //   return { message: 'Email sent successfully' };
+  // }
 }

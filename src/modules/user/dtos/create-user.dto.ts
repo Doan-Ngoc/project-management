@@ -4,6 +4,7 @@ import {
   IsEmail,
   MinLength,
   IsUUID,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -15,6 +16,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
+  @IsString()
+  @IsNotEmpty()
+  employeeName: string;
+
   @IsUUID()
   @IsNotEmpty()
   roleId: string;
@@ -23,5 +28,6 @@ export class CreateUserDto {
   workingUnitId: string;
 
   @IsString()
-  profilePicture: string;
+  @IsOptional()
+  profilePicture?: string;
 }
